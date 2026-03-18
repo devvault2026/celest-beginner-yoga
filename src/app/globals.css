@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+:root {
+  --background: #FCF9F7; /* Warm Linen White */
+  --foreground: #2D2424; /* Deep Earth Charcoal */
+  --nanobanana: #F5E050; /* Signature Yellow */
+  --rose-accent: #E11D48; /* Empowering Rose */
+  --sage-accent: #6B705C; /* Quaint Sage */
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(45, 36, 36, 0.1);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-nanobanana: var(--nanobanana);
+  --color-rose: var(--rose-accent);
+  --color-sage: var(--sage-accent);
+  --color-glass-bg: var(--glass-bg);
+  --color-glass-border: var(--glass-border);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px 0 rgba(45, 36, 36, 0.05);
+}
+
+.glass-hover {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-hover:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: var(--rose-accent);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px 0 rgba(225, 29, 72, 0.1);
+}
+
+.text-gradient {
+  background: linear-gradient(to right, #2D2424, #E11D48, #D4A373);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--rose-accent);
+  border-radius: 10px;
+  opacity: 0.2;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #C4183C;
+}
+
+/* Deep Clerk Branding Removal */
+.cl-internal-ph7266, 
+.cl-internal-1dauvpw,
+.cl-internal-1xp9g26,
+.cl-internal-48s9jr,
+.cl-dev-badge,
+.cl-brandedBox,
+.cl-userButtonPopoverFooter,
+[data-test-id="dev-badge"] {
+  display: none !important;
+}
+
+.cl-rootBox {
+  width: 100%;
+}
+
+.cl-card {
+  box-shadow: none !important;
+  border: none !important;
+  background: transparent !important;
+}
