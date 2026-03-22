@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -17,13 +17,14 @@ import {
   Sparkles,
   Search,
   Database,
-  CheckCircle2
+  CheckCircle2,
+  Loader2
 } from 'lucide-react';
 import { useSequenceStore } from '@/store/useSequenceStore';
-import { MOCK_POSES } from '@/lib/mock-data';
 import { PoseCard } from '@/components/PoseCard';
 import { PracticeSession } from '@/components/PracticeSession';
 import { cn } from '@/lib/utils';
+import { Pose } from '@/types/database';
 
 export const dynamic = 'force-dynamic';
 
@@ -32,8 +33,25 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<'library' | 'sequence'>('library');
   const [searchQuery, setSearchQuery] = useState('');
   const [isPracticing, setIsPracticing] = useState(false);
+  const [poses, setPoses] = useState<Pose[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const filteredPoses = MOCK_POSES.filter(pose => 
+  useEffect(() => {
+    const fetchPoses = async () => {
+      try {
+        const res = await fetch('/api/admin/poses');
+        const data = await res.json();
+        setPoses(data);
+      } catch (error) {
+        console.error('Failed to load poses:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPoses();
+  }, []);
+
+  const filteredPoses = poses.filter(pose => 
     (pose.english_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     pose.sanskrit_name.toLowerCase().includes(searchQuery.toLowerCase())) &&
     !!pose.image_url

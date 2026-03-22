@@ -1,3 +1,5 @@
+"use client";
+
 import { Hero } from "@/components/Hero";
 import Link from 'next/link';
 import { PoseCard } from "@/components/PoseCard";
@@ -9,9 +11,28 @@ import { ScienceDeepDive } from "@/components/ScienceDeepDive";
 import { Testimonials } from "@/components/Testimonials";
 import { FlowQuiz } from "@/components/FlowQuiz";
 import { AISafetyPreview } from "@/components/AISafetyPreview";
-import { MOCK_POSES } from "@/lib/mock-data";
+import { useState, useEffect } from "react";
+import { Pose } from "@/types/database";
 
 export default function Home() {
+  const [poses, setPoses] = useState<Pose[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPoses = async () => {
+      try {
+        const res = await fetch('/api/admin/poses');
+        const data = await res.json();
+        setPoses(data);
+      } catch (error) {
+        console.error('Failed to load poses:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPoses();
+  }, []);
+
   return (
     <main className="min-h-screen bg-background text-foreground selection:bg-rose/20 selection:text-foreground">
       {/* 1. Hero Section - Brand Identity */}
@@ -37,7 +58,7 @@ export default function Home() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 relative z-10">
-          {MOCK_POSES.filter(pose => !!pose.image_url).slice(0, 3).map((pose) => (
+          {poses.filter(pose => !!pose.image_url).slice(0, 3).map((pose) => (
             <PoseCard key={pose.id} pose={pose} />
           ))}
         </div>
